@@ -1,4 +1,3 @@
 # ISCKD
+We will release the code when the paper is accepted.
 
-## Main
-The official code for ISCKD. The code will coming song
