@@ -1,0 +1,54 @@
+可视化
+python tools/test.py a_configs/kitti/PGD/PGD_ga.py \
+    work_dirs/pgd_150_100_ri/epoch_48.pth \
+    --show --show-dir ./vis/pgd/pgd_ga_100_50
+
+CUDA_VISIBLE_DEVICES=0 python tools/test.py a_configs/kitti/PGD/pgd_r101_caffe_fpn_gn-head_3x4_4x_kitti-mono3d.py \
+    work_dirs/pgd_r101_caffe_fpn_gn-head_3x4_4x_kitti-mono3d/epoch_40.pth \
+    --show --show-dir ./vis/pgd_new/
+
+python tools/test.py a_configs/kitti/PGD/PGD_ga.py \
+    work_dirs/pgd_150_100_ri/epoch_40.pth \
+    --eval mAP
+
+# todo 参数量分析
+CUDA_VISIBLE_DEVICES=3 python3 tools/analysis_tools/get_flops.py a_configs/kitti/PGD_OPA/pgd_r101_caffe_fpn_gn-head_3x4_4x_kitti-mono3d.py
+CUDA_VISIBLE_DEVICES=3 python3 tools/analysis_tools/get_flops.py a_configs/kitti/PGD_mini/PGD_r18.py
+CUDA_VISIBLE_DEVICES=3 python3 tools/analysis_tools/get_flops.py a_configs/kitti/PGD_mini/PGD_r18_h.py
+CUDA_VISIBLE_DEVICES=3 python3 tools/analysis_tools/get_flops.py a_configs/kitti/PGD_big/PGD_reg3.2.py
+CUDA_VISIBLE_DEVICES=3 python3 tools/analysis_tools/get_flops.py a_configs/kitti/PGD_mini/PGD_reg800.py
+CUDA_VISIBLE_DEVICES=3 python3 tools/analysis_tools/get_flops.py a_configs/kitti/PGD_mini/Dis_PGD_reg800h.py
+CUDA_VISIBLE_DEVICES=3 python3 tools/analysis_tools/get_flops.py a_configs/kitti/PGD_mini/PGD_mobv2.py
+CUDA_VISIBLE_DEVICES=3 python3 tools/analysis_tools/get_flops.py a_configs/kitti/PGD_mini/PGD_shuf.py
+CUDA_VISIBLE_DEVICES=3 python3 tools/analysis_tools/get_flops.py a_configs/kitti/PGD_mini/PGD_mobv2_h.py
+CUDA_VISIBLE_DEVICES=3 python3 tools/analysis_tools/get_flops.py a_configs/kitti/PGD_mini/PGD_shuf_h.py
+
+python3 tools/analysis_tools/get_flops.py a_configs/kitti/smoke/smoke.py
+python3 tools/analysis_tools/get_flops.py a_configs/kitti/smoke/smoke.py
+
+
+todo 测试集说明
+CUDA_VISIBLE_DEVICES=2 python tools/test.py a_configs/kitti/PGD_mini/Dis_PGD_r18_h.py \
+   /workspace/mmdetection3d-master/work_dirs_GAUSS_sigma/Dis_PGD_r18_gauss_A=0.3_sigma=0.75/epoch_48.pth \
+   --format-only --eval-options 'pklfile_prefix=./pgd_kitti_results' 'submission_prefix=./pgd_kitti_results'
+
+todo 训练任务
+a_configs/kitti/PGD_mini/Dis_PGD_r18_h.py
+a_configs/kitti/PGD_mini/Dis_PGD_r18.py
+a_configs/kitti/PGD_mini/Dis_PGD_reg800h.py
+a_configs/kitti/PGD_mini/Dis_PGD_reg800.py
+
+a_configs/kitti/PGD_mini/Dis_PGD_mobv2.py
+a_configs/kitti/PGD_mini/Dis_PGD_mobv2_reg.py
+a_configs/kitti/PGD_mini/Dis_PGD_shuf.py
+a_configs/kitti/PGD_mini/Dis_PGD_shuf_reg.py
+
+
+python tools/create_data.py kitti --root-path /home/data/kitti/ --out-dir /home/data/KITTI_new/ --extra-tag kitti
+CUDA_VISIBLE_DEVICES=0,1 PORT=28456 tools/dist_train.sh a_configs/dairv2x/mvxnet/mvx50.py 2
+ CUDA_VISIBLE_DEVICES=1 python3 tools/train.py a_configs/dairv2x/mvxnet/mvx50.py
+
+CUDA_VISIBLE_DEVICES=4 python3 tools/train.py a_configs/kitti/PGD_mini/Dis_PGD_swint_swinl.py
+CUDA_VISIBLE_DEVICES=5 python3 tools/train.py a_configs/kitti/PGD_mini/Dis_PGD_swint_swinl.py
+CUDA_VISIBLE_DEVICES=7 python3 tools/train.py a_configs/kitti/PGD_mini/Dis_PGD_swint_swinl.py
+

@@ -1,0 +1,29 @@
+todo 1、配置文件说明
+1) a_configs:
+PGD_OPA todo paper3
+PGD_big PGD_mini PGD_cycle todo  paper5
+smoke 3dssd
+
+todo 2、自己添加新的模块主要位于mmdet里面
+1) models
+  (1) backbones
+      todo paper5
+      ShuffleNet.py
+      Mobilenet_v2.py
+      需要在mmdet3d/models/backbones/_init_.py 添加自己新注册的heads
+  (2) dense_heads
+      todo paper3
+      pgd_ga_head.py
+      todo paper5
+      pgd_head_dis.py
+      需要在mmdet3d/models/dense_heads/_init_.py 添加自己新注册的heads
+  (3) detectors
+      todo paper5
+      dis_pgd.py
+      需要在mmdet3d/models/detectors/_init_.py 添加自己新注册的heads
+
+
+
+
+
+
