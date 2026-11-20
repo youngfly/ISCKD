@@ -180,7 +180,7 @@ mmdet3d/models/detectors/__init__.py     → DIS_PGD, DIS_SMOKE
 | ----------------------------------- | ----------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | todo 1 · `PGD_OPA`               | paper3                                    | `a_configs/kitti/PGD_OPA/`（5 个）                                   | —                                                                                                                 |
 | todo 1 · `PGD_big`、`PGD_mini` | paper5                                    | `a_configs/kitti/PGD_big/`（6）、`a_configs/kitti/PGD_mini/`（25） | —                                                                                                                 |
-| todo 1 · **`PGD_cycle`**   | paper5 循环蒸馏线                         | **不存在**                                                       | 目录未入库，见 [§9](#9-已知问题) 第 8 条                                                                           |
+| todo 1 · **`PGD_cycle`**   | paper5 循环蒸馏线                         | **不存在**                                                       | 目录未入库，见 [§9](#9-复现注意) 第 8 条                                                                           |
 | todo 1 · `smoke`                 | 蒸馏线                                    | `a_configs/kitti/smoke/`（11）                                       | —                                                                                                                 |
 | todo 1 · `3dssd`                 | 点云基线                                  | `a_configs/kitti/3dssd/`（4）                                        | —                                                                                                                 |
 | todo 2(1) · `ShuffleNet.py`      | paper5 backbone                           | `mmdet3d/models/backbones/shuffleNet.py`                             | 已注册，正在使用（注意文件名是大写 N：`shuffleNet.py`）                                                          |
@@ -194,7 +194,7 @@ mmdet3d/models/detectors/__init__.py     → DIS_PGD, DIS_SMOKE
 
 ## 8. 训练与评测
 
-> 本节整合了仓库根 `说明.txt` 的**全部**命令（可视化、mAP 评测、FLOPs、测试集提交、训练任务、数据准备），并把其中已失效的 `a_configs/kitti/PGD/` 路径改写为现存的 `a_configs/kitti/PGD_OPA/`（对应关系见 [§9](#9-已知问题) 第 7 条）。环境激活与 GPU 编号按各自机器调整。
+> 本节整合了仓库根 `说明.txt` 的**全部**命令（可视化、mAP 评测、FLOPs、测试集提交、训练任务、数据准备），并把其中已失效的 `a_configs/kitti/PGD/` 路径改写为现存的 `a_configs/kitti/PGD_OPA/`（对应关系见 [§9](#9-复现注意) 第 7 条）。环境激活与 GPU 编号按各自机器调整。
 
 **训练（单卡）**
 
@@ -315,10 +315,7 @@ a_configs/kitti/PGD_mini/Dis_PGD_shuf.py
 a_configs/kitti/PGD_mini/Dis_PGD_shuf_reg.py
 ```
 
-## 9. 已知问题
-
-> 类别标签：`[代码bug]` `[配置错配]` `[疑似bug]` `[路径失效]` `[孤儿模块]` `[文档过时]` `[缺失]` `[来源待确认]`。
-> 修复后请把对应条目移入「已修复」并保留记录。
+## 9. 复现注意
 
 1. **[代码bug] `pgd_head.py:781` 空 GT 分支 `UnboundLocalError`**：`weight_dim != -1` 且当前图像无正样本时，`loss_fuse_depth *= torch.exp(-pos_weights[:, 0].sum())` 使用了该分支内尚未赋值的 `loss_fuse_depth`（官方顺序是先算 sum 再乘）。**`PGD_big` 全部 5 个配置 `weight_dim=1`，均受影响**。
 2. **[配置错配] `Dis_smoke_102_34.py` / `Dis_smoke_102_60.py` 教师结构与权重不符**：`tea_model` 建的是 **DLA60**，却加载 `smoke102/epoch_72.pth`；`strict=False` 会静默跳过不匹配键，蒸馏实际失效或退化。
